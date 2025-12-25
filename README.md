@@ -113,6 +113,7 @@ A feature-rich Pomodoro timer web application built with vanilla JavaScript, HTM
 
 ```
 pomodoro-timer/
+├── assets/images       #Images that appear in the inrtoduction window
 ├── index.html          # Page structure and modals
 ├── main.css            # Complete styling and responsive design
 ├── main.js             # Application logic and state management
@@ -247,8 +248,6 @@ Each activity tracks:
 ### Method 2: Local Server (Recommended)
 
 1. Use VS Code Live Server extension
-2. Or run: `python -m http.server 8000`
-3. Visit: `http://localhost:8000`
 
 ### Method 3: Deployment
 
