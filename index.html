@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro timer</title>
+    <link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+    <main>
+        <!-- Clear Data Button -->
+        <button class="clear-btn" id="clearDataBtn" title="Clear all data">🗑️</button>
+
+        <!-- Reintroduce Button -->
+        <button class="reintroduce-btn" id="reintroduceBtn" title="See app introduction">?</button>
+
+        <!-- Introduction Modal -->
+        <div class="modal hidden" id="introModal">
+            <div class="modal-content intro-modal-content">
+                <div class="intro-steps">
+                    <!-- Step 1 -->
+                    <div class="intro-step active" data-step="1">
+                        <h2 class="intro-title">Welcome to Pomodoro Timer! 🍅</h2>
+                        <p class="intro-text">Manage your time with the Pomodoro technique. Work in focused intervals
+                            with breaks in between. Let's learn how to use it!</p>
+                        <div class="intro-illustration">⏱️</div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="intro-step" data-step="2">
+                        <h2 class="intro-title">Track Your Progress</h2>
+                        <p class="intro-text">Look at the top-left corner to see your activity breakdown and total work
+                            time. These update automatically as you complete sessions!</p>
+                        <div class="intro-illustration">
+                            <img src="assets/track.png" alt="Track Your Progress"
+                                style="width: 100%; max-width: 335px;">
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="intro-step" data-step="3">
+                        <h2 class="intro-title">Choose Your Activity</h2>
+                        <p class="intro-text">Select what you're working on from this dropdown: Work, Study, Exercise,
+                            Reading, Coding, or Other. Your stats are tracked by activity!</p>
+                        <div class="intro-illustration"><img src="assets/choose_acctivity.png"
+                                alt="Choose Your Activity" style="width: 100%; max-width: 200px;"></div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="intro-step" data-step="4">
+                        <h2 class="intro-title">Pick Your Time</h2>
+                        <p class="intro-text">Choose a preset (25/5, 50/10, 75/15) or click the pencil ✎ to customize
+                            your work and rest times.</p>
+                        <div class="intro-illustration"><img src="assets/pick_time.png" alt="Pick Your Time"
+                                style="width: 100%; max-width: 335px;">
+                            <img src="assets/custom.png" alt="custom time"
+                                style="width: 100%; max-width: 100px; margin-top: 10px;">
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="intro-step" data-step="5">
+                        <h2 class="intro-title">Start Your Session</h2>
+                        <p class="intro-text">Click the "Start" button to begin your timer. It runs in the background
+                            even if you leave the page!</p>
+                        <div class="intro-illustration"><img src="assets/start.png" alt="Start Your Session"
+                                style="width: 100%; max-width: 335px;"></div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="intro-step" data-step="6">
+                        <h2 class="intro-title">Useful Tools</h2>
+                        <p class="intro-text">Use the "?" button to see this guide again. Use "🗑️" to clear all your
+                            data. The timer counts background time even when you leave!</p>
+                        <div class="intro-illustration"><img src="assets/tools.png" alt="Useful Tools"
+                                style="width: 100%; max-width: 335px;"></div>
+                    </div>
+
+                    <!-- Step 7 -->
+                    <div class="intro-step" data-step="7">
+                        <h2 class="intro-title">Pro Tips! 💡</h2>
+                        <p class="intro-text">If you work 5+ minutes before restarting, that time is added to your
+                            total. Work sessions include interruptions only if they're longer than 5 minutes.</p>
+                        <div class="intro-illustration">✨</div>
+                    </div>
+
+                    <!-- Step 8 -->
+                    <div class="intro-step" data-step="8">
+                        <h2 class="intro-title">You're Ready! 🎯</h2>
+                        <p class="intro-text">Now you know everything. Start a session and focus on your work. Good luck
+                            on your Pomodoro journey!</p>
+                        <div class="intro-illustration">🚀</div>
+                    </div>
+                </div>
+
+                <div class="intro-controls">
+                    <div class="intro-dots">
+                        <span class="dot active" data-dot="1"></span>
+                        <span class="dot" data-dot="2"></span>
+                        <span class="dot" data-dot="3"></span>
+                        <span class="dot" data-dot="4"></span>
+                        <span class="dot" data-dot="5"></span>
+                        <span class="dot" data-dot="6"></span>
+                        <span class="dot" data-dot="7"></span>
+                        <span class="dot" data-dot="8"></span>
+                    </div>
+                    <div class="intro-buttons">
+                        <button class="modal-btn cancel" id="skipIntroBtn">Skip</button>
+                        <button class="modal-btn confirm" id="nextIntroBtn">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal hidden" id="clearModal">
+            <div class="modal-content">
+                <h2 class="modal-title">Clear History</h2>
+                <p class="modal-message">This will clear the history of your previous work and all accumulated
+                    statistics. This action cannot be undone.</p>
+                <div class="modal-buttons">
+                    <button class="modal-btn cancel" id="cancelClearBtn">Cancel</button>
+                    <button class="modal-btn confirm" id="confirmClearBtn">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Time Modal -->
+        <div class="modal hidden" id="customModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Set Custom Times</h2>
+                    <button class="modal-close" id="closeCustomModal">&times;</button>
+                </div>
+                <div class="custom-time-selectors">
+                    <div class="custom-selector-group">
+                        <label for="modalWorkTime">Work Time (minutes)</label>
+                        <select id="modalWorkTime">
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                        </select>
+                    </div>
+                    <div class="custom-selector-group">
+                        <label for="modalRestTime">Rest Time (minutes)</label>
+                        <select id="modalRestTime">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="modal-btn cancel" id="cancelCustomBtn">Cancel</button>
+                    <button class="modal-btn confirm" id="confirmCustomBtn">Apply</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Panel -->
+        <div class="summary-panel">
+            <div class="summary-item">
+                <span class="summary-label">Cycles Breakdown</span>
+                <div class="cycles-breakdown" id="cyclesBreakdown">
+                    <div class="cycle-item"><span class="activity-name">Work:</span> <span class="cycle-count"
+                            data-activity="work">0</span></div>
+                    <div class="cycle-item"><span class="activity-name">Study:</span> <span class="cycle-count"
+                            data-activity="study">0</span></div>
+                    <div class="cycle-item"><span class="activity-name">Exercise:</span> <span class="cycle-count"
+                            data-activity="exercise">0</span></div>
+                    <div class="cycle-item"><span class="activity-name">Reading:</span> <span class="cycle-count"
+                            data-activity="reading">0</span></div>
+                    <div class="cycle-item"><span class="activity-name">Coding:</span> <span class="cycle-count"
+                            data-activity="coding">0</span></div>
+                    <div class="cycle-item"><span class="activity-name">Other:</span> <span class="cycle-count"
+                            data-activity="other">0</span></div>
+                </div>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Total Work</span>
+                <span class="summary-value" id="totalWorkTime">0m</span>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Activity Type Selection -->
+            <div class="section-title">Activity Type</div>
+            <div class="activity-selector">
+                <select id="activityType">
+                    <option value="work">Work</option>
+                    <option value="study">Study</option>
+                    <option value="exercise">Exercise</option>
+                    <option value="reading">Reading</option>
+                    <option value="coding">Coding</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- Time Combination Selection -->
+            <div class="section-title">Time Presets</div>
+            <div class="presets-group">
+                <button class="preset-btn active" data-work="25" data-rest="5">25/5</button>
+                <button class="preset-btn" data-work="50" data-rest="10">50/10</button>
+                <button class="preset-btn" data-work="75" data-rest="15">75/15</button>
+                <button class="preset-btn custom-preset" data-work="custom" data-rest="custom">
+                    <span id="customPresetLabel">Custom</span>
+                    <button class="preset-edit-btn" id="customEditBtn" title="Edit custom times">✎</button>
+                </button>
+            </div>
+
+
+            <div class="mode" id="mode">Work</div>
+            <div class="timer" id="timer">25:00</div>
+            <div class="button">
+                <button class="buttonstart" id="start">Start</button>
+                <button class="buttonrestart" id="restart">Restart</button>
+            </div>
+        </div>
+    </main>
+    <script src="main.js"></script>
+</body>
+
+</html>
