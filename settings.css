@@ -1,0 +1,163 @@
+/* ============ SETTINGS PAGE STYLES ============ */
+
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.settings-header {
+    margin-bottom: 2rem;
+}
+
+.settings-section {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings-section h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+}
+
+.settings-section h4 {
+    margin: 1rem 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.settings-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Dark theme specific styles */
+.theme-dark .settings-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.theme-dark .settings-section h3,
+.theme-dark .settings-section h4 {
+    color: var(--text-primary);
+}
+
+.theme-dark .settings-btn {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.theme-dark .settings-btn:hover {
+    background: var(--border-color);
+}
+
+.settings-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.settings-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.settings-btn:hover {
+    background: var(--border-color);
+    transform: translateY(-2px);
+}
+
+.settings-btn.danger {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.settings-btn.danger:hover {
+    background: var(--danger);
+    color: white;
+}
+
+/* Analytics Container */
+.analytics-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.analytics-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.period-select {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.export-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+    background: var(--accent-hover);
+}
+
+/* Notes & Sounds Containers */
+.notes-container,
+.sounds-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .settings-actions {
+        flex-direction: column;
+    }
+
+    .settings-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

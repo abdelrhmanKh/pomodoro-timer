@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Productivity Hub</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body class="auth-page">
+    <div class="auth-container">
+        <!-- Decorative Background -->
+        <div class="auth-bg">
+            <div class="auth-bg-circle"></div>
+            <div class="auth-bg-circle"></div>
+            <div class="auth-bg-circle"></div>
+        </div>
+
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🚀</div>
+                <h1 class="auth-title">Productivity Hub</h1>
+                <p class="auth-subtitle">Your all-in-one productivity workspace</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Sign In</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form class="auth-form active" id="loginForm" data-form="login">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="auth-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password"
+                            required>
+                        <button type="button" class="password-toggle" data-target="loginPassword">👁️</button>
+                    </div>
+                </div>
+                <button type="button" class="forgot-password-btn" id="forgotPasswordBtn">Forgot password?</button>
+                <button type="submit" class="auth-submit-btn">Sign In</button>
+                <div class="auth-error hidden" id="loginError"></div>
+            </form>
+
+            <!-- Signup Form -->
+            <form class="auth-form" id="signupForm" data-form="signup">
+                <div class="form-group">
+                    <label for="signupName">Display Name</label>
+                    <input type="text" id="signupName" class="auth-input" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" class="auth-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="signupPassword" class="auth-input"
+                            placeholder="Create a password (min 6 chars)" minlength="6" required>
+                        <button type="button" class="password-toggle" data-target="signupPassword">👁️</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="signupConfirmPassword" class="auth-input"
+                            placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" data-target="signupConfirmPassword">👁️</button>
+                    </div>
+                </div>
+                <button type="submit" class="auth-submit-btn">Create Account</button>
+                <div class="auth-error hidden" id="signupError"></div>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>or continue with</span>
+            </div>
+
+            <!-- Social Login -->
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn" id="googleSignInBtn">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- Features Preview -->
+            <div class="auth-features">
+                <div class="auth-feature">
+                    <div class="auth-feature-icon">🍅</div>
+                    <div class="auth-feature-text">
+                        <p class="auth-feature-title">Pomodoro Timer</p>
+                        <p class="auth-feature-desc">Stay focused with timed sessions</p>
+                    </div>
+                </div>
+                <div class="auth-feature">
+                    <div class="auth-feature-icon">✅</div>
+                    <div class="auth-feature-text">
+                        <p class="auth-feature-title">Tasks & Habits</p>
+                        <p class="auth-feature-desc">Kanban boards & streak tracking</p>
+                    </div>
+                </div>
+                <div class="auth-feature">
+                    <div class="auth-feature-icon">📊</div>
+                    <div class="auth-feature-text">
+                        <p class="auth-feature-title">Analytics & More</p>
+                        <p class="auth-feature-desc">Canvas, notes & insights</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forgot Password Modal -->
+        <div class="modal hidden" id="forgotPasswordModal">
+            <div class="modal-content auth-modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Reset Password</h2>
+                    <button class="modal-close" id="closeForgotPasswordModal">&times;</button>
+                </div>
+                <p class="modal-description">Enter your email address and we'll send you a link to reset your password.
+                </p>
+                <form id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label for="resetEmail">Email</label>
+                        <input type="email" id="resetEmail" class="auth-input" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Send Reset Link</button>
+                    <div class="auth-error hidden" id="resetError"></div>
+                    <div class="auth-success hidden" id="resetSuccess"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay hidden" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Please wait...</span>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <!-- Theme loader for auth page -->
+    <script>
+        (function () {
+            // Simplified theme loading for login page
+            const THEMES = {
+                'light-default': { category: 'light', colors: { '--bg-primary': '#ffffff', '--bg-secondary': '#f5f5f5', '--text-primary': '#1a1a1a', '--text-secondary': '#666666', '--accent': '#6366f1', '--accent-light': '#eef2ff', '--border-color': '#e5e5e5' } },
+                'light-ocean': { category: 'light', colors: { '--bg-primary': '#f0f9ff', '--bg-secondary': '#e0f2fe', '--text-primary': '#0c4a6e', '--text-secondary': '#0369a1', '--accent': '#0ea5e9', '--accent-light': '#bae6fd', '--border-color': '#7dd3fc' } },
+                'light-forest': { category: 'light', colors: { '--bg-primary': '#f0fdf4', '--bg-secondary': '#dcfce7', '--text-primary': '#14532d', '--text-secondary': '#166534', '--accent': '#22c55e', '--accent-light': '#bbf7d0', '--border-color': '#86efac' } },
+                'light-rose': { category: 'light', colors: { '--bg-primary': '#fff1f2', '--bg-secondary': '#ffe4e6', '--text-primary': '#881337', '--text-secondary': '#be123c', '--accent': '#f43f5e', '--accent-light': '#fecdd3', '--border-color': '#fda4af' } },
+                'light-amber': { category: 'light', colors: { '--bg-primary': '#fffbeb', '--bg-secondary': '#fef3c7', '--text-primary': '#78350f', '--text-secondary': '#92400e', '--accent': '#f59e0b', '--accent-light': '#fef3c7', '--border-color': '#fde68a' } },
+                'dark-default': { category: 'dark', colors: { '--bg-primary': '#1a1a2e', '--bg-secondary': '#252541', '--text-primary': '#f5f5f5', '--text-secondary': '#c0c0d0', '--accent': '#6366f1', '--accent-light': '#312e81', '--border-color': '#3a3a5a' } },
+                'dark-midnight': { category: 'dark', colors: { '--bg-primary': '#0f172a', '--bg-secondary': '#1e293b', '--text-primary': '#f1f5f9', '--text-secondary': '#b0bfd0', '--accent': '#3b82f6', '--accent-light': '#1e3a5f', '--border-color': '#334155' } },
+                'dark-dracula': { category: 'dark', colors: { '--bg-primary': '#282a36', '--bg-secondary': '#44475a', '--text-primary': '#f8f8f2', '--text-secondary': '#b0b8d0', '--accent': '#bd93f9', '--accent-light': '#44475a', '--border-color': '#6272a4' } },
+                'dark-nord': { category: 'dark', colors: { '--bg-primary': '#2e3440', '--bg-secondary': '#3b4252', '--text-primary': '#eceff4', '--text-secondary': '#c8ced9', '--accent': '#88c0d0', '--accent-light': '#434c5e', '--border-color': '#4c566a' } },
+                'dark-monokai': { category: 'dark', colors: { '--bg-primary': '#272822', '--bg-secondary': '#3e3d32', '--text-primary': '#f8f8f2', '--text-secondary': '#c6c6a0', '--accent': '#a6e22e', '--accent-light': '#49483e', '--border-color': '#75715e' } },
+                'dark-coffee': { category: 'dark', colors: { '--bg-primary': '#1c1410', '--bg-secondary': '#2c2218', '--text-primary': '#f0e0d4', '--text-secondary': '#d0b4a0', '--accent': '#d4915e', '--accent-light': '#3c2e22', '--border-color': '#4a3c2e' } }
+            };
+
+            try {
+                const savedTheme = localStorage.getItem('pomodoroTheme');
+                const theme = THEMES[savedTheme] || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? THEMES['dark-default'] : THEMES['light-default']);
+
+                // Apply theme
+                const root = document.documentElement;
+                Object.entries(theme.colors).forEach(([prop, val]) => root.style.setProperty(prop, val));
+                root.style.setProperty('--bg', theme.colors['--bg-primary']);
+
+                document.body.classList.add('theme-' + theme.category);
+                document.body.style.backgroundColor = theme.colors['--bg-primary'];
+            } catch (e) { }
+        })();
+    </script>
+
+    <script src="auth.js"></script>
+</body>
+
+</html>

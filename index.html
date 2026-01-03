@@ -4,224 +4,1589 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoro timer</title>
+    <title>Productivity Hub</title>
     <link rel="stylesheet" href="main.css">
-
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="pomodoro.css">
+    <link rel="stylesheet" href="tasks.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="canvas.css">
+    <link rel="stylesheet" href="habits.css">
+    <link rel="stylesheet" href="analytics.css">
+    <link rel="stylesheet" href="notes.css">
+    <link rel="stylesheet" href="sounds.css">
+    <link rel="stylesheet" href="themes.css">
+    <link rel="stylesheet" href="shortcuts.css">
+    <link rel="stylesheet" href="settings.css">
 </head>
 
 <body>
-    <main>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading...</p>
+        </div>
+    </div>
 
-        <!-- Clear Data Button -->
-        <button class="clear-btn" id="clearDataBtn" title="Clear all data">🗑️</button>
-        <!-- Reintroduce Button -->
-        <button class="reintroduce-btn" id="reintroduceBtn" title="See app introduction">?</button>
+    <!-- Inline script to guarantee loader hides - runs immediately -->
+    <script>
+        // Hide loader after 0.5 seconds no matter what
+        setTimeout(function () {
+            var loader = document.getElementById('loadingScreen');
+            var app = document.getElementById('appContainer');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.style.visibility = 'hidden';
+            }
+            if (app) {
+                app.style.display = 'flex';
+            }
+        }, 1000);
+    </script>
 
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Navigation Sidebar -->
+        <nav class="app-nav">
+            <div class="nav-header">
+                <h1 class="nav-title">Productivity Hub</h1>
+            </div>
+            <!-- User Profile (populated by JS) -->
+            <div class="user-profile hidden" id="userProfile">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">User</div>
+                    <div class="user-email" id="userEmail">user@email.com</div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Sign Out">🚪</button>
+            </div>
 
-        <!-- Introduction Modal -->
-        <div class="modal hidden" id="introModal">
-            <div class="modal-content intro-modal-content">
-                <div class="intro-steps">
-                    <!-- Step 1 -->
-                    <div class="intro-step active" data-step="1">
-                        <h2 class="intro-title">Welcome to Pomodoro Timer! 🍅</h2>
-                        <p class="intro-text">Manage your time with the Pomodoro technique. Work in focused intervals
-                            with breaks in between. Let's learn how to use it!</p>
-                        <div class="intro-illustration">⏱️</div>
-                    </div>
+            <ul class="nav-list">
+                <li>
+                    <button class="nav-item active" data-app="dashboard" title="Dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="pomodoro" title="Pomodoro Timer">
+                        <span class="nav-icon">🍅</span>
+                        <span class="nav-text">Pomodoro</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="tasks" title="Task Manager">
+                        <span class="nav-icon">✓</span>
+                        <span class="nav-text">Tasks</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="canvas" title="Canvas Whiteboard">
+                        <span class="nav-icon">🎨</span>
+                        <span class="nav-text">Canvas</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="habits" title="Habit Tracker">
+                        <span class="nav-icon">🎯</span>
+                        <span class="nav-text">Habits</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="analytics" title="Analytics & Reports">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">Analytics</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="notes" title="Notes & Journal">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">Notes</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="sounds" title="Focus Sounds">
+                        <span class="nav-icon">🔊</span>
+                        <span class="nav-text">Sounds</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-item" data-app="settings" title="Settings">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">Settings</span>
+                    </button>
+                </li>
+            </ul>
+            <!-- Clear Data Button -->
+            <button class="clear-btn hidden" id="clearDataBtn" title="Clear all data">🗑️ Clear</button>
+            <!-- Reintroduce Button -->
+            <button class="reintroduce-btn hidden" id="reintroduceBtn" title="See app introduction">❓ Help</button>
+            <!-- Clear Tasks Button -->
+            <button class="clear-btn hidden" id="clearTasksBtn" title="Clear all tasks">🗑️ Clear</button>
+            <!-- Clear Canvas Button -->
+            <button class="clear-btn hidden" id="clearCanvasNavBtn" title="Clear canvas">🗑️ Clear</button>
+            <!-- Clear Habits Button -->
+            <button class="clear-btn hidden" id="clearHabitsBtn" title="Clear all habits">🗑️ Clear</button>
+        </nav>
 
-                    <!-- Step 2 -->
-                    <div class="intro-step" data-step="2">
-                        <h2 class="intro-title">Track Your Progress</h2>
-                        <p class="intro-text">Look at the top-left corner to see your activity breakdown and total work
-                            time. These update automatically as you complete sessions!</p>
-                        <div class="intro-illustration">
-                            <img src="assets/track.png" alt="Track Your Progress"
-                                style="width: 100%; max-width: 335px;">
+        <main class="main-content">
+            <!-- ============ DASHBOARD APP ============ -->
+            <section class="app-section active" id="app-dashboard">
+                <div class="dashboard-container">
+                    <!-- Header -->
+                    <div class="dashboard-header">
+                        <h2 class="app-title">Dashboard 📊</h2>
+                        <div class="dashboard-date">
+                            <span class="date-icon">📅</span>
+                            <span id="dashboardDate">Today</span>
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
-                    <div class="intro-step" data-step="3">
-                        <h2 class="intro-title">Choose Your Activity</h2>
-                        <p class="intro-text">Select what you're working on from this dropdown: Work, Study, Exercise,
-                            Reading, Coding, or Other. Your stats are tracked by activity!</p>
-                        <div class="intro-illustration"><img src="assets/choose_acctivity.png"
-                                alt="Choose Your Activity" style="width: 100%; max-width: 200px;"></div>
+                    <!-- Welcome Banner -->
+                    <div class="welcome-banner">
+                        <div class="welcome-content">
+                            <h2 class="welcome-greeting" id="dashboardGreeting">Good morning! 👋</h2>
+                            <p class="welcome-message">Here's your productivity overview for today. Keep up the great
+                                work!</p>
+                            <div class="welcome-stats">
+                                <div class="welcome-stat">
+                                    <span class="welcome-stat-value" id="welcomeFocusTime">0m</span>
+                                    <span class="welcome-stat-label">Focus Time</span>
+                                </div>
+                                <div class="welcome-stat">
+                                    <span class="welcome-stat-value" id="welcomeTasksCompleted">0</span>
+                                    <span class="welcome-stat-label">Tasks Done</span>
+                                </div>
+                                <div class="welcome-stat">
+                                    <span class="welcome-stat-value" id="welcomeHabitsCompleted">0/0</span>
+                                    <span class="welcome-stat-label">Habits</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="welcome-illustration">🚀</div>
                     </div>
 
-                    <!-- Step 4 -->
-                    <div class="intro-step" data-step="4">
-                        <h2 class="intro-title">Pick Your Time</h2>
-                        <p class="intro-text">Choose a preset (25/5, 50/10, 75/15) or click the pencil ✎ to customize
-                            your work and rest times.</p>
-                        <div class="intro-illustration"><img src="assets/pick_time.png" alt="Pick Your Time"
-                                style="width: 100%; max-width: 335px;">
-                            <img src="assets/custom.png" alt="custom time"
-                                style="width: 100%; max-width: 100px; margin-top: 10px;">
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <div class="quick-action-card" data-app="pomodoro">
+                            <div class="quick-action-icon pomodoro">🍅</div>
+                            <div class="quick-action-content">
+                                <div class="quick-action-title">Start Focus Session</div>
+                                <div class="quick-action-subtitle">Pomodoro Timer</div>
+                            </div>
+                            <span class="quick-action-arrow">→</span>
+                        </div>
+                        <div class="quick-action-card" data-app="tasks">
+                            <div class="quick-action-icon tasks">✓</div>
+                            <div class="quick-action-content">
+                                <div class="quick-action-title">Manage Tasks</div>
+                                <div class="quick-action-subtitle">Task Manager</div>
+                            </div>
+                            <span class="quick-action-arrow">→</span>
+                        </div>
+                        <div class="quick-action-card" data-app="habits">
+                            <div class="quick-action-icon habits">🎯</div>
+                            <div class="quick-action-content">
+                                <div class="quick-action-title">Track Habits</div>
+                                <div class="quick-action-subtitle">Habit Tracker</div>
+                            </div>
+                            <span class="quick-action-arrow">→</span>
+                        </div>
+                        <div class="quick-action-card" data-app="canvas">
+                            <div class="quick-action-icon canvas">🎨</div>
+                            <div class="quick-action-content">
+                                <div class="quick-action-title">Open Canvas</div>
+                                <div class="quick-action-subtitle">Whiteboard</div>
+                            </div>
+                            <span class="quick-action-arrow">→</span>
                         </div>
                     </div>
 
-                    <!-- Step 5 -->
-                    <div class="intro-step" data-step="5">
-                        <h2 class="intro-title">Start Your Session</h2>
-                        <p class="intro-text">Click the "Start" button to begin your timer. It runs in the background
-                            even if you leave the page!</p>
-                        <div class="intro-illustration"><img src="assets/start.png" alt="Start Your Session"
-                                style="width: 100%; max-width: 335px;"></div>
-                    </div>
+                    <!-- Dashboard Grid -->
+                    <div class="dashboard-grid">
+                        <!-- Pomodoro Summary Card -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="card-title-icon">🍅</span>
+                                    Today's Focus
+                                </h3>
+                                <button class="card-action" data-app="pomodoro">Open →</button>
+                            </div>
+                            <div class="pomodoro-summary">
+                                <div class="pomodoro-stat focus">
+                                    <div class="pomodoro-stat-icon">⏱️</div>
+                                    <div class="pomodoro-stat-value" id="dashFocusTime">0m</div>
+                                    <div class="pomodoro-stat-label">Focus Time</div>
+                                </div>
+                                <div class="pomodoro-stat sessions">
+                                    <div class="pomodoro-stat-icon">🔄</div>
+                                    <div class="pomodoro-stat-value" id="dashSessions">0</div>
+                                    <div class="pomodoro-stat-label">Sessions</div>
+                                </div>
+                                <div class="pomodoro-stat streak">
+                                    <div class="pomodoro-stat-icon">🔥</div>
+                                    <div class="pomodoro-stat-value" id="dashStreak">0</div>
+                                    <div class="pomodoro-stat-label">Day Streak</div>
+                                </div>
+                            </div>
+                            <div class="activity-breakdown" id="activityBreakdown">
+                                <!-- Activity bars rendered by JS -->
+                            </div>
+                        </div>
 
-                    <!-- Step 6 -->
-                    <div class="intro-step" data-step="6">
-                        <h2 class="intro-title">Useful Tools</h2>
-                        <p class="intro-text">Use the "?" button to see this guide again. Use "🗑️" to clear all your
-                            data. The timer counts background time even when you leave!</p>
-                        <div class="intro-illustration"><img src="assets/tools.png" alt="Useful Tools"
-                                style="width: 100%; max-width: 335px;"></div>
-                    </div>
+                        <!-- Tasks Summary Card -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="card-title-icon">✓</span>
+                                    Tasks Overview
+                                </h3>
+                                <button class="card-action" data-app="tasks">Open →</button>
+                            </div>
+                            <div class="tasks-summary-grid">
+                                <div class="task-stat-mini todo">
+                                    <div class="task-stat-mini-value" id="dashTodo">0</div>
+                                    <div class="task-stat-mini-label">To Do</div>
+                                </div>
+                                <div class="task-stat-mini doing">
+                                    <div class="task-stat-mini-value" id="dashDoing">0</div>
+                                    <div class="task-stat-mini-label">Doing</div>
+                                </div>
+                                <div class="task-stat-mini done">
+                                    <div class="task-stat-mini-value" id="dashDone">0</div>
+                                    <div class="task-stat-mini-label">Done</div>
+                                </div>
+                                <div class="task-stat-mini overdue">
+                                    <div class="task-stat-mini-value" id="dashOverdue">0</div>
+                                    <div class="task-stat-mini-label">Overdue</div>
+                                </div>
+                            </div>
+                            <div class="task-list-preview" id="taskPreviewList">
+                                <!-- Task preview rendered by JS -->
+                            </div>
+                        </div>
 
-                    <!-- Step 7 -->
-                    <div class="intro-step" data-step="7">
-                        <h2 class="intro-title">Pro Tips! 💡</h2>
-                        <p class="intro-text">If you work 5+ minutes before restarting, that time is added to your
-                            total. Work sessions include interruptions only if they're longer than 5 minutes.</p>
-                        <div class="intro-illustration">✨</div>
-                    </div>
+                        <!-- Habits Summary Card -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="card-title-icon">🎯</span>
+                                    Today's Habits
+                                </h3>
+                                <button class="card-action" data-app="habits">Open →</button>
+                            </div>
+                            <div class="habits-progress-ring">
+                                <div class="big-progress-ring">
+                                    <svg width="140" height="140">
+                                        <circle class="big-progress-ring-bg" cx="70" cy="70" r="54"></circle>
+                                        <circle class="big-progress-ring-fill" id="habitsProgressFill" cx="70" cy="70"
+                                            r="54" stroke-dasharray="339.29" stroke-dashoffset="339.29"></circle>
+                                    </svg>
+                                    <div class="big-progress-text">
+                                        <div class="big-progress-value" id="habitsProgressValue">0%</div>
+                                        <div class="big-progress-label" id="habitsProgressLabel">0/0 done</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="habits-list-preview" id="habitsPreviewList">
+                                <!-- Habits preview rendered by JS -->
+                            </div>
+                        </div>
 
-                    <!-- Step 8 -->
-                    <div class="intro-step" data-step="8">
-                        <h2 class="intro-title">You're Ready! 🎯</h2>
-                        <p class="intro-text">Now you know everything. Start a session and focus on your work. Good luck
-                            on your Pomodoro journey!</p>
-                        <div class="intro-illustration">🚀</div>
+                        <!-- Productivity Score Card -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="card-title-icon">⚡</span>
+                                    Productivity Score
+                                </h3>
+                            </div>
+                            <div class="productivity-score-card">
+                                <div class="score-circle">
+                                    <svg width="120" height="120">
+                                        <circle class="score-circle-bg" cx="60" cy="60" r="45"></circle>
+                                        <circle class="score-circle-fill good" id="productivityScoreFill" cx="60"
+                                            cy="60" r="45" stroke-dasharray="282.74" stroke-dashoffset="282.74">
+                                        </circle>
+                                    </svg>
+                                    <span class="score-value" id="productivityScoreValue">0</span>
+                                </div>
+                                <div class="score-label" id="productivityScoreLabel">Getting Started</div>
+                                <p class="score-description" id="productivityScoreDesc">Complete tasks and habits to
+                                    boost your score!</p>
+                            </div>
+                        </div>
+
+                        <!-- Goals Progress Card -->
+                        <div class="dashboard-card full-width">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span class="card-title-icon">🏆</span>
+                                    Daily Goals
+                                </h3>
+                            </div>
+                            <div class="goals-list" id="goalsList">
+                                <!-- Goals rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ POMODORO TIMER APP ============ -->
+            <section class="app-section" id="app-pomodoro">
+
+
+
+                <!-- Introduction Modal -->
+                <div class="modal hidden" id="introModal">
+                    <div class="modal-content intro-modal-content">
+                        <div class="intro-steps">
+                            <!-- Step 1 -->
+                            <div class="intro-step active" data-step="1">
+                                <h2 class="intro-title">Welcome to Pomodoro Timer! 🍅</h2>
+                                <p class="intro-text">Manage your time with the Pomodoro technique. Work in focused
+                                    intervals
+                                    with breaks in between. Let's learn how to use it!</p>
+                                <div class="intro-illustration">⏱️</div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="intro-step" data-step="2">
+                                <h2 class="intro-title">Track Your Progress</h2>
+                                <p class="intro-text">Look at the top-left corner to see your activity breakdown and
+                                    total work
+                                    time. These update automatically as you complete sessions!</p>
+                                <div class="intro-illustration">
+                                    <img src="assets/track.png" alt="Track Your Progress"
+                                        style="width: 100%; max-width: 335px;">
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="intro-step" data-step="3">
+                                <h2 class="intro-title">Choose Your Activity</h2>
+                                <p class="intro-text">Select what you're working on from this dropdown: Work, Study,
+                                    Exercise,
+                                    Reading, Coding, or Other. Your stats are tracked by activity!</p>
+                                <div class="intro-illustration"><img src="assets/choose_acctivity.png"
+                                        alt="Choose Your Activity" style="width: 100%; max-width: 200px;"></div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="intro-step" data-step="4">
+                                <h2 class="intro-title">Pick Your Time</h2>
+                                <p class="intro-text">Choose a preset (25/5, 50/10, 75/15) or click the pencil ✎ to
+                                    customize
+                                    your work and rest times.</p>
+                                <div class="intro-illustration"><img src="assets/pick_time.png" alt="Pick Your Time"
+                                        style="width: 100%; max-width: 335px;">
+                                    <img src="assets/custom.png" alt="custom time"
+                                        style="width: 100%; max-width: 100px; margin-top: 10px;">
+                                </div>
+                            </div>
+
+                            <!-- Step 5 -->
+                            <div class="intro-step" data-step="5">
+                                <h2 class="intro-title">Start Your Session</h2>
+                                <p class="intro-text">Click the "Start" button to begin your timer. It runs in the
+                                    background
+                                    even if you leave the page!</p>
+                                <div class="intro-illustration"><img src="assets/start.png" alt="Start Your Session"
+                                        style="width: 100%; max-width: 335px;"></div>
+                            </div>
+
+                            <!-- Step 6 -->
+                            <div class="intro-step" data-step="6">
+                                <h2 class="intro-title">Useful Tools</h2>
+                                <p class="intro-text">Use the "?" button to see this guide again. Use "🗑️" to clear all
+                                    your
+                                    data. The timer counts background time even when you leave!</p>
+                                <div class="intro-illustration"><img src="assets/tools.png" alt="Useful Tools"
+                                        style="width: 100%; max-width: 335px;"></div>
+                            </div>
+
+                            <!-- Step 7 -->
+                            <div class="intro-step" data-step="7">
+                                <h2 class="intro-title">Pro Tips! 💡</h2>
+                                <p class="intro-text">If you work 5+ minutes before restarting, that time is added to
+                                    your
+                                    total. Work sessions include interruptions only if they're longer than 5 minutes.
+                                </p>
+                                <div class="intro-illustration">✨</div>
+                            </div>
+
+                            <!-- Step 8 -->
+                            <div class="intro-step" data-step="8">
+                                <h2 class="intro-title">You're Ready! 🎯</h2>
+                                <p class="intro-text">Now you know everything. Start a session and focus on your work.
+                                    Good luck
+                                    on your Pomodoro journey!</p>
+                                <div class="intro-illustration">🚀</div>
+                            </div>
+                        </div>
+
+                        <div class="intro-controls">
+                            <div class="intro-dots">
+                                <span class="dot active" data-dot="1"></span>
+                                <span class="dot" data-dot="2"></span>
+                                <span class="dot" data-dot="3"></span>
+                                <span class="dot" data-dot="4"></span>
+                                <span class="dot" data-dot="5"></span>
+                                <span class="dot" data-dot="6"></span>
+                                <span class="dot" data-dot="7"></span>
+                                <span class="dot" data-dot="8"></span>
+                            </div>
+                            <div class="intro-buttons">
+                                <button class="modal-btn cancel" id="skipIntroBtn">Skip</button>
+                                <button class="modal-btn confirm" id="nextIntroBtn">Next</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="intro-controls">
-                    <div class="intro-dots">
-                        <span class="dot active" data-dot="1"></span>
-                        <span class="dot" data-dot="2"></span>
-                        <span class="dot" data-dot="3"></span>
-                        <span class="dot" data-dot="4"></span>
-                        <span class="dot" data-dot="5"></span>
-                        <span class="dot" data-dot="6"></span>
-                        <span class="dot" data-dot="7"></span>
-                        <span class="dot" data-dot="8"></span>
-                    </div>
-                    <div class="intro-buttons">
-                        <button class="modal-btn cancel" id="skipIntroBtn">Skip</button>
-                        <button class="modal-btn confirm" id="nextIntroBtn">Next</button>
+                <!-- Confirmation Modal -->
+                <div class="modal hidden" id="clearModal">
+                    <div class="modal-content">
+                        <h2 class="modal-title">Clear History</h2>
+                        <p class="modal-message">This will clear the history of your previous work and all accumulated
+                            statistics. This action cannot be undone.</p>
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" id="cancelClearBtn">Cancel</button>
+                            <button class="modal-btn confirm" id="confirmClearBtn">Clear</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Confirmation Modal -->
-        <div class="modal hidden" id="clearModal">
-            <div class="modal-content">
-                <h2 class="modal-title">Clear History</h2>
-                <p class="modal-message">This will clear the history of your previous work and all accumulated
-                    statistics. This action cannot be undone.</p>
-                <div class="modal-buttons">
-                    <button class="modal-btn cancel" id="cancelClearBtn">Cancel</button>
-                    <button class="modal-btn confirm" id="confirmClearBtn">Clear</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Custom Time Modal -->
-        <div class="modal hidden" id="customModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Set Custom Times</h2>
-                    <button class="modal-close" id="closeCustomModal">&times;</button>
-                </div>
-                <div class="custom-time-selectors">
-                    <div class="custom-selector-group">
-                        <label for="modalWorkTime">Work Time (minutes)</label>
-                        <select id="modalWorkTime">
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="75">75</option>
-                        </select>
+                <!-- Custom Time Modal -->
+                <div class="modal hidden" id="customModal">
+                    <div class="modal-content custom-modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">⏱️ Set Custom Times</h2>
+                            <button class="modal-close" id="closeCustomModal">&times;</button>
+                        </div>
+                        <p class="modal-subtitle">Customize your work and break duration</p>
+                        <div class="custom-time-selectors">
+                            <div class="custom-selector-group">
+                                <label for="modalWorkTime">🎯 Work Duration</label>
+                                <div class="time-input-wrapper">
+                                    <select id="modalWorkTime" class="time-select">
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        <option value="25" selected>25</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                        <option value="50">50</option>
+                                        <option value="60">60</option>
+                                        <option value="75">75</option>
+                                        <option value="90">90</option>
+                                    </select>
+                                    <span class="time-unit">min</span>
+                                </div>
+                            </div>
+                            <div class="custom-selector-group">
+                                <label for="modalRestTime">☕ Break Duration</label>
+                                <div class="time-input-wrapper">
+                                    <select id="modalRestTime" class="time-select">
+                                        <option value="5" selected>5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                    <span class="time-unit">min</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" id="cancelCustomBtn">Cancel</button>
+                            <button class="modal-btn confirm" id="confirmCustomBtn">Apply</button>
+                        </div>
                     </div>
-                    <div class="custom-selector-group">
-                        <label for="modalRestTime">Rest Time (minutes)</label>
-                        <select id="modalRestTime">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                        </select>
+                </div>
+
+                <!-- Summary Panel -->
+                <div class="summary-panel">
+                    <div class="summary-item">
+                        <span class="summary-label">Cycles Breakdown</span>
+                        <div class="cycles-breakdown" id="cyclesBreakdown">
+                            <div class="cycle-item"><span class="activity-name">Work:</span> <span class="cycle-count"
+                                    data-activity="work">0</span></div>
+                            <div class="cycle-item"><span class="activity-name">Study:</span> <span class="cycle-count"
+                                    data-activity="study">0</span></div>
+                            <div class="cycle-item"><span class="activity-name">Exercise:</span> <span
+                                    class="cycle-count" data-activity="exercise">0</span></div>
+                            <div class="cycle-item"><span class="activity-name">Reading:</span> <span
+                                    class="cycle-count" data-activity="reading">0</span></div>
+                            <div class="cycle-item"><span class="activity-name">Coding:</span> <span class="cycle-count"
+                                    data-activity="coding">0</span></div>
+                            <div class="cycle-item"><span class="activity-name">Other:</span> <span class="cycle-count"
+                                    data-activity="other">0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Focus Stats -->
+                    <div class="summary-item focus-stats-item">
+                        <span class="summary-label">📊 Today's Focus</span>
+                        <div class="focus-stats-grid">
+                            <div class="focus-stat">
+                                <span class="focus-stat-value" id="totalWorkTime">0m</span>
+                                <span class="focus-stat-label">Total Time</span>
+                            </div>
+                            <div class="focus-stat">
+                                <span class="focus-stat-value" id="sessionsToday">0</span>
+                                <span class="focus-stat-label">Sessions</span>
+                            </div>
+                            <div class="focus-stat streak-stat">
+                                <span class="focus-stat-value"><span id="currentStreak">0</span> 🔥</span>
+                                <span class="focus-stat-label">Day Streak</span>
+                            </div>
+                        </div>
+                        <div class="daily-goal-section">
+                            <div class="daily-goal-header">
+                                <span class="daily-goal-label">Daily Goal</span>
+                                <button class="daily-goal-edit" id="editDailyGoal" title="Edit daily goal">✎</button>
+                                <span class="daily-goal-progress" id="dailyGoalText">0 / 120 min</span>
+                            </div>
+                            <div class="daily-goal-bar">
+                                <div class="daily-goal-fill" id="dailyGoalFill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Goal Edit Modal -->
+                    <div class="modal hidden" id="dailyGoalModal">
+                        <div class="modal-content" style="max-width: 350px;">
+                            <div class="modal-header">
+                                <h2 class="modal-title">🎯 Set Daily Goal</h2>
+                                <button class="modal-close" id="closeDailyGoalModal">&times;</button>
+                            </div>
+                            <p class="modal-subtitle">How many minutes do you want to focus each day?</p>
+                            <div class="daily-goal-input-section">
+                                <input type="number" id="dailyGoalInput" class="daily-goal-input" min="15" max="480"
+                                    value="120" step="15">
+                                <span class="daily-goal-input-unit">minutes</span>
+                            </div>
+                            <div class="daily-goal-presets">
+                                <button class="goal-preset-btn" data-goal="60">1h</button>
+                                <button class="goal-preset-btn" data-goal="90">1.5h</button>
+                                <button class="goal-preset-btn active" data-goal="120">2h</button>
+                                <button class="goal-preset-btn" data-goal="180">3h</button>
+                                <button class="goal-preset-btn" data-goal="240">4h</button>
+                            </div>
+                            <div class="modal-buttons">
+                                <button class="modal-btn cancel" id="cancelDailyGoal">Cancel</button>
+                                <button class="modal-btn confirm" id="confirmDailyGoal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doing Tasks Panel (Shows when there are tasks in "doing" state) -->
+                    <div class="summary-item doing-tasks-panel" id="doingTasksPanel">
+                        <div class="doing-tasks-header">
+                            <span class="summary-label">🔥 Currently Working On</span>
+                            <span class="doing-count" id="doingTasksCount">0</span>
+                        </div>
+                        <div class="doing-tasks-list" id="doingTasksList">
+                            <!-- Doing tasks will be dynamically inserted here -->
+                        </div>
                     </div>
                 </div>
-                <div class="modal-buttons">
-                    <button class="modal-btn cancel" id="cancelCustomBtn">Cancel</button>
-                    <button class="modal-btn confirm" id="confirmCustomBtn">Apply</button>
+
+                <!-- Main Pomodoro Layout -->
+                <div class="pomodoro-layout">
+                    <!-- Left: Settings Panel -->
+                    <div class="settings-panel">
+                        <h3 class="panel-title">⚙️ Settings</h3>
+
+                        <!-- Activity Type Selection -->
+                        <div class="setting-group">
+                            <div class="section-title">Activity Type</div>
+                            <div class="activity-selector">
+                                <select id="activityType">
+                                    <option value="work">Work</option>
+                                    <option value="study">Study</option>
+                                    <option value="exercise">Exercise</option>
+                                    <option value="reading">Reading</option>
+                                    <option value="coding">Coding</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Time Combination Selection -->
+                        <div class="setting-group">
+                            <div class="section-title">Time Presets</div>
+                            <div class="presets-group">
+                                <button class="preset-btn active" data-work="25" data-rest="5">25/5</button>
+                                <button class="preset-btn" data-work="50" data-rest="10">50/10</button>
+                                <button class="preset-btn" data-work="75" data-rest="15">75/15</button>
+                                <button class="preset-btn custom-preset" data-work="custom" data-rest="custom">
+                                    <span id="customPresetLabel">Custom</span>
+                                    <button class="preset-edit-btn" id="customEditBtn"
+                                        title="Edit custom times">✎</button>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Timer Display -->
+                    <div class="timer-panel">
+                        <div class="mode" id="mode">Work</div>
+                        <div class="timer" id="timer">25:00</div>
+                        <div class="controls">
+                            <button class="buttonstart" id="start">Start</button>
+                            <button class="buttonrestart" id="restart">Reset</button>
+                        </div>
+                        <!-- Mini Sound Player -->
+                        <div class="sounds-mini-player hidden" id="soundsMiniPlayer">
+                            <span class="mini-player-icon">🎵</span>
+                            <span class="mini-player-label">🌧️</span>
+                            <button class="mini-player-stop" id="miniPlayerStop" title="Stop sounds">⏹</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Summary Panel -->
-        <div class="summary-panel">
-            <div class="summary-item">
-                <span class="summary-label">Cycles Breakdown</span>
-                <div class="cycles-breakdown" id="cyclesBreakdown">
-                    <div class="cycle-item"><span class="activity-name">Work:</span> <span class="cycle-count"
-                            data-activity="work">0</span></div>
-                    <div class="cycle-item"><span class="activity-name">Study:</span> <span class="cycle-count"
-                            data-activity="study">0</span></div>
-                    <div class="cycle-item"><span class="activity-name">Exercise:</span> <span class="cycle-count"
-                            data-activity="exercise">0</span></div>
-                    <div class="cycle-item"><span class="activity-name">Reading:</span> <span class="cycle-count"
-                            data-activity="reading">0</span></div>
-                    <div class="cycle-item"><span class="activity-name">Coding:</span> <span class="cycle-count"
-                            data-activity="coding">0</span></div>
-                    <div class="cycle-item"><span class="activity-name">Other:</span> <span class="cycle-count"
-                            data-activity="other">0</span></div>
+            </section>
+
+            <!-- ============ TASK MANAGER APP ============ -->
+            <section class="app-section" id="app-tasks">
+
+
+
+                <!-- Floating Timer Widget -->
+                <div class="floating-timer hidden" id="floatingTimer">
+                    <div class="floating-timer-content">
+                        <span class="floating-timer-mode" id="floatingTimerMode">Work</span>
+                        <span class="floating-timer-display" id="floatingTimerDisplay">25:00</span>
+                    </div>
                 </div>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Total Work</span>
-                <span class="summary-value" id="totalWorkTime">0m</span>
-            </div>
-        </div>
 
-        <div class="container">
-            <!-- Activity Type Selection -->
-            <div class="section-title">Activity Type</div>
-            <div class="activity-selector">
-                <select id="activityType">
-                    <option value="work">Work</option>
-                    <option value="study">Study</option>
-                    <option value="exercise">Exercise</option>
-                    <option value="reading">Reading</option>
-                    <option value="coding">Coding</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
+                <div class="container task-container">
+                    <!-- Task Header -->
+                    <div class="task-header">
+                        <h2 class="app-title">Task Manager 📝</h2>
+                        <!-- Add Task Button -->
+                        <button class="task-btn add-task-btn primary-btn" id="openAddTaskBtn">+ Add New Task</button>
+                    </div>
 
-            <!-- Time Combination Selection -->
-            <div class="section-title">Time Presets</div>
-            <div class="presets-group">
-                <button class="preset-btn active" data-work="25" data-rest="5">25/5</button>
-                <button class="preset-btn" data-work="50" data-rest="10">50/10</button>
-                <button class="preset-btn" data-work="75" data-rest="15">75/15</button>
-                <button class="preset-btn custom-preset" data-work="custom" data-rest="custom">
-                    <span id="customPresetLabel">Custom</span>
-                    <button class="preset-edit-btn" id="customEditBtn" title="Edit custom times">✎</button>
-                </button>
-            </div>
+                    <!-- Task Filters - Kanban Style -->
+                    <div class="task-filters">
+                        <button class="filter-btn active" data-filter="all">📊 All</button>
+                        <button class="filter-btn" data-filter="todo">📋 To Do</button>
+                        <button class="filter-btn" data-filter="doing">🔄 Doing</button>
+                        <button class="filter-btn" data-filter="done">✅ Done</button>
+                        <button class="filter-btn" data-filter="recurring">🔁 Recurring</button>
+                    </div>
 
+                    <!-- Task List -->
+                    <div class="task-list" id="taskList">
+                        <p class="empty-state">No tasks yet. Add one to get started! 📋</p>
+                    </div>
 
-            <div class="mode" id="mode">Work</div>
-            <div class="timer" id="timer">25:00</div>
-            <div class="button">
-                <button class="buttonstart" id="start">Start</button>
-                <button class="buttonrestart" id="restart">Restart</button>
-            </div>
-        </div>
-    </main>
+                    <!-- Task Stats -->
+                    <div class="task-stats-container">
+                        <div class="task-stats">
+                            <div class="stat-item total">
+                                <span>Total:</span>
+                                <strong id="totalTasks">0</strong>
+                            </div>
+                            <div class="stat-item todo">
+                                <span>To Do:</span>
+                                <strong id="todoTasks">0</strong>
+                            </div>
+                            <div class="stat-item doing">
+                                <span>Doing:</span>
+                                <strong id="doingTasks">0</strong>
+                            </div>
+                            <div class="stat-item done">
+                                <span>Done:</span>
+                                <strong id="completedTasks">0</strong>
+                            </div>
+                            <div class="stat-item recurring">
+                                <span>Recurring:</span>
+                                <strong id="recurringTasks">0</strong>
+                            </div>
+                        </div>
+
+                        <!-- Custom Trackers Section -->
+                        <div class="trackers-section">
+                            <div class="trackers-header">
+                                <span class="trackers-title">📈 Custom Trackers</span>
+                                <button class="add-tracker-btn" id="addTrackerBtn">+ Add Tracker</button>
+                            </div>
+                            <div id="customTrackers"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clear Tasks Modal -->
+                <div class="modal hidden" id="clearTasksModal">
+                    <div class="modal-content">
+                        <h2 class="modal-title">Clear All Tasks</h2>
+                        <p class="modal-message">This will delete all tasks. This action cannot be undone.</p>
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" id="cancelClearTasksBtn">Cancel</button>
+                            <button class="modal-btn confirm" id="confirmClearTasksBtn">Clear All</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Task Modal -->
+                <div class="modal hidden" id="addTaskModal">
+                    <div class="modal-content task-modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="taskModalTitle">Create New Task</h2>
+                            <button class="modal-close" id="closeAddTaskModal">&times;</button>
+                        </div>
+                        <form id="addTaskForm" class="task-form">
+                            <input type="hidden" id="editTaskId" value="">
+                            <div class="form-group">
+                                <label for="taskTitle">Task Title <span class="required">*</span></label>
+                                <input type="text" id="taskTitle" class="form-input" placeholder="Enter task title"
+                                    maxlength="100" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskDescription">Description</label>
+                                <textarea id="taskDescription" class="form-textarea"
+                                    placeholder="Enter task description (optional)" maxlength="500" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskDueDate">Due Date</label>
+                                <input type="date" id="taskDueDate" class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskDeadline">Deadline (Time)</label>
+                                <input type="time" id="taskDeadline" class="form-input">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tags</label>
+                                <div class="tag-input-container">
+                                    <div class="tags-list" id="selectedTags"></div>
+                                    <div class="tag-selector">
+                                        <button type="button" class="tag-dropdown-btn" id="tagDropdownBtn">+ Add
+                                            Tag</button>
+                                        <div class="tag-dropdown hidden" id="tagDropdown">
+                                            <div class="tag-option" data-value="work">🏢 Work</div>
+                                            <div class="tag-option" data-value="study">📚 Study</div>
+                                            <div class="tag-option" data-value="personal">👤 Personal</div>
+                                            <div class="tag-option" data-value="urgent">🔥 Urgent</div>
+                                            <div class="divider"></div>
+                                            <input type="text" id="newTagInput" class="new-tag-input"
+                                                placeholder="Add custom tag...">
+                                        </div>
+                                    </div>
+                                    <small class="tag-limit">Max 5 tags</small>
+                                </div>
+                            </div>
+
+                            <!-- Recurring Task Section -->
+                            <div class="form-group recurring-section">
+                                <label class="recurring-toggle-label">
+                                    <input type="checkbox" id="taskRecurring" class="recurring-checkbox">
+                                    <span class="recurring-toggle-text">🔁 Make this a recurring task</span>
+                                </label>
+
+                                <div class="recurring-options hidden" id="recurringOptions">
+                                    <div class="recurring-frequency">
+                                        <label>Repeat every:</label>
+                                        <div class="frequency-inputs">
+                                            <input type="number" id="recurringAmount"
+                                                class="form-input frequency-amount" min="1" value="1">
+                                            <select id="recurringUnit" class="form-input frequency-unit">
+                                                <option value="day">Day(s)</option>
+                                                <option value="week">Week(s)</option>
+                                                <option value="month">Month(s)</option>
+                                                <option value="year">Year(s)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="recurring-times-per-period">
+                                        <label>Times per period:</label>
+                                        <div class="times-inputs">
+                                            <input type="number" id="recurringTimesPerPeriod"
+                                                class="form-input times-amount" min="1" value="1">
+                                            <span class="times-label">time(s) per</span>
+                                            <select id="recurringTimesPeriod" class="form-input times-period">
+                                                <option value="day">Day</option>
+                                                <option value="week">Week</option>
+                                                <option value="month">Month</option>
+                                            </select>
+                                        </div>
+                                        <small class="recurring-hint">e.g., "3 times per day" or "4 times per
+                                            week"</small>
+                                    </div>
+
+                                    <div class="recurring-start">
+                                        <label for="recurringStartDate">Start Date:</label>
+                                        <input type="date" id="recurringStartDate" class="form-input">
+                                    </div>
+
+                                    <div class="recurring-end">
+                                        <label>End:</label>
+                                        <div class="end-options">
+                                            <label class="radio-option">
+                                                <input type="radio" name="recurringEnd" value="never" checked>
+                                                <span>Never</span>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="recurringEnd" value="date">
+                                                <span>On date:</span>
+                                                <input type="date" id="recurringEndDate"
+                                                    class="form-input end-date-input" disabled>
+                                            </label>
+                                            <label class="radio-option">
+                                                <input type="radio" name="recurringEnd" value="occurrences">
+                                                <span>After</span>
+                                                <input type="number" id="recurringOccurrences"
+                                                    class="form-input occurrences-input" min="1" value="10" disabled>
+                                                <span>occurrences</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taskMedia">Upload Media (Optional)</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="taskMedia" class="file-input"
+                                        accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt" multiple>
+                                    <button type="button" class="file-btn">📎 Choose Files</button>
+                                    <span class="file-name">No files chosen</span>
+                                </div>
+                                <div class="selected-files-list" id="selectedFilesList"></div>
+                                <small class="file-info">Max 5MB per file. Multiple files allowed.</small>
+                            </div>
+
+                            <div class="modal-buttons">
+                                <button type="button" class="modal-btn cancel" id="cancelAddTaskBtn">Cancel</button>
+                                <button type="submit" class="modal-btn confirm" id="submitTaskBtn">Create Task</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Add Tracker Modal -->
+                <div class="modal hidden" id="addTrackerModal">
+                    <div class="modal-content tracker-modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Add Custom Tracker</h2>
+                            <button class="modal-close" id="closeTrackerModal">&times;</button>
+                        </div>
+                        <form id="addTrackerForm">
+                            <div class="form-group">
+                                <label for="trackerName">Tracker Name</label>
+                                <input type="text" id="trackerName" class="form-input" placeholder="e.g., Work Tasks"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Tag to Track</label>
+                                <div class="tracker-tags" id="trackerTagOptions"></div>
+                            </div>
+                            <div class="modal-buttons">
+                                <button type="button" class="modal-btn cancel" id="cancelTrackerBtn">Cancel</button>
+                                <button type="submit" class="modal-btn confirm">Add Tracker</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tag Color Picker Modal -->
+                <div class="modal hidden" id="tagColorPickerModal">
+                    <div class="modal-content color-picker-modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Choose Tag Color</h2>
+                            <button class="modal-close" id="closeColorPickerModal">&times;</button>
+                        </div>
+                        <p class="color-picker-tag-name" id="colorPickerTagName"></p>
+                        <div class="color-palette" id="colorPalette"></div>
+                        <div class="modal-buttons">
+                            <button type="button" class="modal-btn cancel" id="cancelColorPickerBtn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ============ CANVAS / WHITEBOARD APP ============ -->
+            <section class="app-section" id="app-canvas">
+                <!-- Canvas Header/Toolbar -->
+                <div class="canvas-header">
+                    <div class="canvas-title-section">
+                        <div class="canvas-selector">
+                            <select class="canvas-dropdown" id="canvasDropdown">
+                                <option value="">Loading...</option>
+                            </select>
+                            <button class="canvas-btn" id="newCanvasBtn" title="New Canvas">+ New</button>
+                            <button class="canvas-btn danger" id="deleteCanvasBtn" title="Delete Canvas">🗑️</button>
+                        </div>
+                        <div class="save-status" id="saveStatus">
+                            <span class="save-indicator"></span>
+                            <span class="save-text">Saved</span>
+                            <button class="save-btn" id="saveCanvasBtn" title="Save Canvas">💾 Save</button>
+                        </div>
+                    </div>
+
+                    <div class="canvas-toolbar">
+                        <div class="toolbar-group">
+                            <button class="tool-btn active" data-tool="select" title="Select (V)">↖️</button>
+                            <button class="tool-btn" data-tool="pan" title="Pan (Space)">✋</button>
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <div class="toolbar-group">
+                            <button class="tool-btn" data-tool="draw" title="Draw (B)">✏️</button>
+                            <button class="tool-btn" data-tool="eraser" title="Eraser (E)">🧽</button>
+                            <button class="tool-btn" data-tool="text" title="Text (T)">T</button>
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <div class="toolbar-group shape-selector">
+                            <button class="shape-btn" data-shape="rect" title="Rectangle">▢</button>
+                            <button class="shape-btn" data-shape="circle" title="Circle">○</button>
+                            <button class="shape-btn" data-shape="line" title="Line">╱</button>
+                            <button class="shape-btn" data-shape="arrow" title="Arrow">→</button>
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <div class="toolbar-group">
+                            <div class="color-picker-wrapper">
+                                <div class="color-preview" id="colorPreview" style="background: #1e293b;"></div>
+                                <input type="color" class="color-input" id="brushColor" value="#1e293b">
+                            </div>
+                            <div class="stroke-width-wrapper">
+                                <span class="stroke-width-label">Size:</span>
+                                <input type="number" class="stroke-width-input" id="strokeWidth" value="2" min="1"
+                                    max="50">
+                            </div>
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <div class="toolbar-group">
+                            <button class="tool-btn" id="addImageBtn" title="Add Image">🖼️</button>
+                            <button class="tool-btn" id="addStickyNote" title="Sticky Note">📝</button>
+                            <button class="tool-btn" id="addTimerWidget" title="Timer Widget">⏱️</button>
+                            <button class="tool-btn" id="addCounterWidget" title="Counter Widget">🔢</button>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        </div>
+
+                        <div class="toolbar-divider"></div>
+
+                        <button class="canvas-btn danger" id="clearCanvasBtn">Clear All</button>
+                        <button class="canvas-btn" id="fullscreenBtn" title="Toggle Fullscreen (F11)">⛶
+                            Fullscreen</button>
+                    </div>
+                </div>
+
+                <!-- Canvas Container -->
+                <div class="canvas-container" id="canvasContainer">
+                    <canvas id="mainCanvas"></canvas>
+
+                    <!-- Zoom Controls -->
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoomOut" title="Zoom Out">−</button>
+                        <span class="zoom-level" id="zoomLevel">100%</span>
+                        <button class="zoom-btn" id="zoomIn" title="Zoom In">+</button>
+                        <button class="zoom-btn" id="zoomReset" title="Reset Zoom">⟲</button>
+                    </div>
+                </div>
+
+                <!-- New Canvas Modal -->
+                <div class="modal hidden" id="newCanvasModal">
+                    <div class="modal-content canvas-modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Create New Canvas</h2>
+                            <button class="modal-close" id="closeNewCanvasModal">&times;</button>
+                        </div>
+                        <form id="newCanvasForm">
+                            <div class="form-group">
+                                <label for="newCanvasName">Canvas Name</label>
+                                <input type="text" id="newCanvasName" class="form-input"
+                                    placeholder="e.g., Project Ideas" required>
+                            </div>
+                            <div class="modal-buttons">
+                                <button type="button" class="modal-btn cancel" id="cancelNewCanvasBtn">Cancel</button>
+                                <button type="submit" class="modal-btn confirm">Create Canvas</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ HABIT TRACKER APP ============ -->
+            <section class="app-section" id="app-habits">
+                <div class="habit-container">
+                    <!-- Header -->
+                    <div class="habit-header">
+                        <h2 class="app-title">Habit Tracker 🎯</h2>
+                        <button class="add-habit-btn" id="openAddHabitBtn">+ Add Habit</button>
+                    </div>
+
+                    <!-- Stats Overview -->
+                    <div class="habit-stats-overview">
+                        <div class="habit-stat-card total">
+                            <span class="stat-icon">📋</span>
+                            <span class="stat-value" id="totalHabits">0</span>
+                            <span class="stat-label">Total Habits</span>
+                        </div>
+                        <div class="habit-stat-card completed">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-value" id="completedToday">0</span>
+                            <span class="stat-label">Completed Today</span>
+                        </div>
+                        <div class="habit-stat-card streak">
+                            <span class="stat-icon">🔥</span>
+                            <span class="stat-value" id="longestStreakStat">0</span>
+                            <span class="stat-label">Best Streak</span>
+                        </div>
+                        <div class="habit-stat-card">
+                            <span class="stat-icon">📊</span>
+                            <span class="stat-value" id="completionRate">0%</span>
+                            <span class="stat-label">Completion Rate</span>
+                        </div>
+                    </div>
+
+                    <!-- Date Navigation -->
+                    <div class="date-navigation">
+                        <button class="date-nav-btn" id="prevDay">←</button>
+                        <span class="current-date" id="currentDate">Today</span>
+                        <button class="date-nav-btn" id="nextDay">→</button>
+                        <button class="today-btn" id="todayBtn" style="display: none;">Today</button>
+                    </div>
+
+                    <!-- Week View -->
+                    <div class="week-view" id="weekView">
+                        <!-- Week days will be rendered by JS -->
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="habit-filters">
+                        <button class="habit-filter-btn active" data-filter="all">📊 All</button>
+                        <button class="habit-filter-btn" data-filter="today">📅 Today</button>
+                        <button class="habit-filter-btn" data-filter="pending">⏳ Pending</button>
+                        <button class="habit-filter-btn" data-filter="completed">✅ Completed</button>
+                    </div>
+
+                    <!-- Habit List -->
+                    <div class="habit-list" id="habitList">
+                        <div class="habit-empty-state">
+                            <div class="empty-icon">🎯</div>
+                            <h3 class="empty-title">No habits yet</h3>
+                            <p class="empty-text">Start building good habits by adding your first one!</p>
+                            <button class="add-habit-btn" onclick="openAddHabitModal()">+ Add Habit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add/Edit Habit Modal -->
+                <div class="modal hidden" id="addHabitModal">
+                    <div class="modal-content habit-modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="habitModalTitle">Create New Habit</h2>
+                            <button class="modal-close" id="closeAddHabitModal">&times;</button>
+                        </div>
+                        <form id="addHabitForm" class="habit-form">
+                            <!-- Habit Templates Section -->
+                            <div class="form-group" id="habitTemplatesSection">
+                                <label>Quick Start - Choose a Template</label>
+                                <div class="habit-templates-grid" id="habitTemplatesGrid">
+                                    <!-- Templates will be rendered by JS -->
+                                </div>
+                                <div class="templates-divider">
+                                    <span>or create your own</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="habitName">Habit Name <span class="required">*</span></label>
+                                <input type="text" id="habitName" class="form-input"
+                                    placeholder="e.g., Drink 8 glasses of water" maxlength="100" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Choose an Icon</label>
+                                <div class="icon-selector">
+                                    <button type="button" class="icon-option selected" data-icon="💪">💪</button>
+                                    <button type="button" class="icon-option" data-icon="🏃">🏃</button>
+                                    <button type="button" class="icon-option" data-icon="📚">📚</button>
+                                    <button type="button" class="icon-option" data-icon="💧">💧</button>
+                                    <button type="button" class="icon-option" data-icon="🧘">🧘</button>
+                                    <button type="button" class="icon-option" data-icon="💤">💤</button>
+                                    <button type="button" class="icon-option" data-icon="🥗">🥗</button>
+                                    <button type="button" class="icon-option" data-icon="💊">💊</button>
+                                    <button type="button" class="icon-option" data-icon="✍️">✍️</button>
+                                    <button type="button" class="icon-option" data-icon="🎯">🎯</button>
+                                    <button type="button" class="icon-option" data-icon="🌅">🌅</button>
+                                    <button type="button" class="icon-option" data-icon="🚶">🚶</button>
+                                    <button type="button" class="icon-option" data-icon="🎵">🎵</button>
+                                    <button type="button" class="icon-option" data-icon="🧹">🧹</button>
+                                    <button type="button" class="icon-option" data-icon="💰">💰</button>
+                                    <button type="button" class="icon-option" data-icon="📱">📱</button>
+                                    <button type="button" class="icon-option" data-icon="🌿">🌿</button>
+                                    <button type="button" class="icon-option" data-icon="🍎">🍎</button>
+                                    <button type="button" class="icon-option" data-icon="☀️">☀️</button>
+                                    <button type="button" class="icon-option" data-icon="🧠">🧠</button>
+                                    <button type="button" class="icon-option" data-icon="❤️">❤️</button>
+                                    <button type="button" class="icon-option" data-icon="🔥">🔥</button>
+                                    <button type="button" class="icon-option" data-icon="⭐">⭐</button>
+                                    <button type="button" class="icon-option" data-icon="🎨">🎨</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Category</label>
+                                <div class="category-selector">
+                                    <button type="button" class="category-option selected" data-category="health">🏥
+                                        Health</button>
+                                    <button type="button" class="category-option" data-category="fitness">💪
+                                        Fitness</button>
+                                    <button type="button" class="category-option" data-category="productivity">📈
+                                        Productivity</button>
+                                    <button type="button" class="category-option" data-category="mindfulness">🧘
+                                        Mindfulness</button>
+                                    <button type="button" class="category-option" data-category="learning">📚
+                                        Learning</button>
+                                    <button type="button" class="category-option" data-category="social">👥
+                                        Social</button>
+                                    <button type="button" class="category-option" data-category="finance">💰
+                                        Finance</button>
+                                    <button type="button" class="category-option" data-category="other">📌
+                                        Other</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Frequency</label>
+                                <div class="frequency-selector">
+                                    <button type="button" class="frequency-option selected" data-frequency="daily">Every
+                                        Day</button>
+                                    <button type="button" class="frequency-option" data-frequency="weekly">Specific
+                                        Days</button>
+                                </div>
+                                <div class="days-selector" id="daysSelector" style="display: none;">
+                                    <button type="button" class="day-option selected" data-day="0">Sun</button>
+                                    <button type="button" class="day-option selected" data-day="1">Mon</button>
+                                    <button type="button" class="day-option selected" data-day="2">Tue</button>
+                                    <button type="button" class="day-option selected" data-day="3">Wed</button>
+                                    <button type="button" class="day-option selected" data-day="4">Thu</button>
+                                    <button type="button" class="day-option selected" data-day="5">Fri</button>
+                                    <button type="button" class="day-option selected" data-day="6">Sat</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="habitTargetCount">Times per Day</label>
+                                <input type="number" id="habitTargetCount" class="form-input" value="1" min="1" max="20"
+                                    style="width: 100px;">
+                            </div>
+
+                            <!-- Reminder Section (shown when editing) -->
+                            <div class="form-group reminder-section" id="habitReminderSection" style="display: none;">
+                                <label>⏰ Reminders</label>
+                                <div class="reminder-toggle">
+                                    <input type="checkbox" id="enableReminder">
+                                    <label for="enableReminder">Enable notifications for this habit</label>
+                                </div>
+                                <div class="reminder-options">
+                                    <select id="reminderType" class="form-input" disabled>
+                                        <option value="interval">Repeat every X hours</option>
+                                        <option value="specific">At specific times</option>
+                                    </select>
+
+                                    <!-- Interval-based reminder -->
+                                    <div class="reminder-interval-config" id="intervalSection" style="display: none;">
+                                        <div class="interval-row">
+                                            <label>Every</label>
+                                            <input type="number" id="intervalHours" class="form-input" value="2" min="1"
+                                                max="12" style="width: 60px;">
+                                            <span>hours</span>
+                                        </div>
+                                        <div class="interval-row">
+                                            <label>From</label>
+                                            <input type="number" id="intervalStart" class="form-input" value="10"
+                                                min="0" max="23" style="width: 60px;">
+                                            <span>:00 to</span>
+                                            <input type="number" id="intervalEnd" class="form-input" value="20" min="0"
+                                                max="23" style="width: 60px;">
+                                            <span>:00</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Specific times reminder -->
+                                    <div class="reminder-specific-config" id="specificTimesSection"
+                                        style="display: none;">
+                                        <label>Enter times (comma-separated, e.g., 09:00, 12:00, 18:00)</label>
+                                        <input type="text" id="reminderTimes" class="form-input"
+                                            placeholder="09:00, 12:00, 18:00">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="habit-modal-footer">
+                            <button type="button" class="modal-btn cancel" id="cancelAddHabitBtn">Cancel</button>
+                            <button type="submit" class="modal-btn confirm" id="submitHabitBtn"
+                                form="addHabitForm">Create Habit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Habit Details Modal -->
+                <div class="modal hidden" id="habitDetailsModal">
+                    <div class="modal-content habit-details-modal">
+                        <div class="modal-header">
+                            <h2 class="modal-title">
+                                <span id="detailHabitIcon">🎯</span>
+                                <span id="detailHabitName">Habit Details</span>
+                            </h2>
+                            <button class="modal-close" id="closeHabitDetailsModal">&times;</button>
+                        </div>
+
+                        <div class="habit-stats-detail">
+                            <div class="habit-detail-stat">
+                                <div class="detail-value" id="detailCurrentStreak">0</div>
+                                <div class="detail-label">🔥 Current Streak</div>
+                            </div>
+                            <div class="habit-detail-stat">
+                                <div class="detail-value" id="detailLongestStreak">0</div>
+                                <div class="detail-label">🏆 Longest Streak</div>
+                            </div>
+                            <div class="habit-detail-stat">
+                                <div class="detail-value" id="detailTotalCompletions">0</div>
+                                <div class="detail-label">✅ Total Completions</div>
+                            </div>
+                        </div>
+
+                        <div class="habit-calendar">
+                            <h3 style="margin-bottom: 12px;">This Month</h3>
+                            <div class="calendar-grid" id="habitCalendarGrid">
+                                <!-- Calendar will be rendered by JS -->
+                            </div>
+                        </div>
+
+                        <div class="modal-buttons" style="margin-top: 20px;">
+                            <button type="button" class="modal-btn cancel" id="closeDetailsBtn"
+                                onclick="document.getElementById('habitDetailsModal').classList.add('hidden')">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clear Habits Modal -->
+                <div class="modal hidden" id="clearHabitsModal">
+                    <div class="modal-content">
+                        <h2 class="modal-title">Clear All Habits</h2>
+                        <p class="modal-message">This will delete all habits and their history. This action cannot be
+                            undone.</p>
+                        <div class="modal-buttons">
+                            <button class="modal-btn cancel" id="cancelClearHabitsBtn">Cancel</button>
+                            <button class="modal-btn confirm" id="confirmClearHabitsBtn">Clear All</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ ANALYTICS APP ============ -->
+            <section class="app-section" id="app-analytics">
+                <div class="analytics-container">
+                    <div class="analytics-header">
+                        <h2 class="app-title">Analytics 📈</h2>
+                        <div class="analytics-actions">
+                            <select id="analyticsPeriod" class="period-select">
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                            <button id="exportDataBtn" class="export-btn">📥 Export</button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="analytics-summary">
+                        <div class="summary-card">
+                            <div class="summary-icon">⏱️</div>
+                            <div class="summary-content">
+                                <div class="summary-value" id="totalFocusTime">0h</div>
+                                <div class="summary-label">Total Focus Time</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">✅</div>
+                            <div class="summary-content">
+                                <div class="summary-value" id="totalTasksCompleted">0</div>
+                                <div class="summary-label">Tasks Completed</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">🎯</div>
+                            <div class="summary-content">
+                                <div class="summary-value" id="habitCompletionRate">0%</div>
+                                <div class="summary-label">Habit Completion</div>
+                            </div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-icon">📊</div>
+                            <div class="summary-content">
+                                <div class="summary-value" id="productivityScore">0</div>
+                                <div class="summary-label">Productivity Score</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3 class="chart-title">Focus Time Trend</h3>
+                            <canvas id="focusChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3 class="chart-title">Activity Breakdown</h3>
+                            <canvas id="activityChart" width="300" height="200"></canvas>
+                        </div>
+                        <div class="chart-card full-width">
+                            <h3 class="chart-title">Habit Completion Trends</h3>
+                            <canvas id="habitTrendChart" width="800" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Insights Section -->
+                    <div class="insights-section">
+                        <h3>💡 Insights</h3>
+                        <div class="insights-grid" id="insightsGrid">
+                            <!-- Insights will be rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ NOTES APP ============ -->
+            <section class="app-section" id="app-notes">
+                <div class="notes-container">
+                    <div class="notes-header">
+                        <h2 class="app-title">Notes 📝</h2>
+                        <div class="notes-view-toggle">
+                            <button class="notes-view-btn active" data-view="notes">📝 Notes</button>
+                            <button class="notes-view-btn" data-view="journal">📓 Journal</button>
+                        </div>
+                        <div class="notes-actions">
+                            <button id="newNoteBtn" class="add-note-btn">+ New Note</button>
+                            <button id="newJournalBtn" class="add-note-btn" style="display: none;">+ New Entry</button>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div id="notesSection" class="notes-layout">
+                        <div class="notes-list-container">
+                            <div class="notes-list" id="notesList">
+                                <!-- Notes will be rendered by JS -->
+                            </div>
+                        </div>
+                        <div class="note-editor" id="noteEditor">
+                            <div class="note-editor-header">
+                                <input type="text" id="noteEditorTitle" class="note-editor-title"
+                                    placeholder="Note title...">
+                                <button id="closeNoteEditor" class="note-editor-close">×</button>
+                            </div>
+                            <div class="note-editor-content">
+                                <textarea id="noteEditorContent" class="note-editor-textarea"
+                                    placeholder="Start writing..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journal Section -->
+                    <div id="journalSection" style="display: none;">
+                        <div class="journal-list" id="journalList">
+                            <!-- Journal entries will be rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Journal Entry Modal -->
+                <div class="journal-modal hidden" id="journalModal">
+                    <div class="journal-modal-content">
+                        <div class="journal-modal-header">
+                            <h3>📓 New Journal Entry</h3>
+                            <button class="journal-modal-close" id="closeJournalModal">×</button>
+                        </div>
+                        <div class="journal-modal-body">
+                            <div class="mood-selector">
+                                <label>How are you feeling?</label>
+                                <div class="mood-options">
+                                    <button type="button" class="mood-option" data-mood="great">
+                                        <span class="mood-emoji">😄</span>
+                                        <span class="mood-label">Great</span>
+                                    </button>
+                                    <button type="button" class="mood-option" data-mood="good">
+                                        <span class="mood-emoji">🙂</span>
+                                        <span class="mood-label">Good</span>
+                                    </button>
+                                    <button type="button" class="mood-option selected" data-mood="okay">
+                                        <span class="mood-emoji">😐</span>
+                                        <span class="mood-label">Okay</span>
+                                    </button>
+                                    <button type="button" class="mood-option" data-mood="bad">
+                                        <span class="mood-emoji">😕</span>
+                                        <span class="mood-label">Bad</span>
+                                    </button>
+                                    <button type="button" class="mood-option" data-mood="terrible">
+                                        <span class="mood-emoji">😢</span>
+                                        <span class="mood-label">Terrible</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="journal-form-group">
+                                <label>What's on your mind?</label>
+                                <textarea id="journalContent" class="journal-textarea"
+                                    placeholder="Write your thoughts..."></textarea>
+                            </div>
+                            <div class="journal-form-group">
+                                <label>Tags (optional)</label>
+                                <input type="text" id="journalTags" class="journal-tags-input"
+                                    placeholder="work, personal, goals...">
+                                <div class="form-hint">Separate tags with commas</div>
+                            </div>
+                        </div>
+                        <div class="journal-modal-footer">
+                            <button class="journal-cancel-btn" id="cancelJournalBtn">Cancel</button>
+                            <button class="journal-submit-btn" id="submitJournalBtn">Save Entry</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ SOUNDS APP ============ -->
+            <section class="app-section" id="app-sounds">
+                <div class="sounds-container">
+                    <div class="sounds-header">
+                        <h2 class="app-title">Focus Sounds 🔊</h2>
+                    </div>
+
+                    <!-- Master Controls -->
+                    <div class="sounds-master-controls">
+                        <div class="master-volume">
+                            <label>🔊 Master Volume</label>
+                            <input type="range" id="masterVolumeSlider" min="0" max="100" value="50">
+                            <span class="master-volume-value" id="masterVolumeValue">50%</span>
+                        </div>
+                        <div class="sounds-options">
+                            <label class="auto-play-option">
+                                <input type="checkbox" id="autoPlaySounds" checked>
+                                <span>Auto-play during focus</span>
+                            </label>
+                            <button id="stopAllSounds" class="stop-all-btn">⏹️ Stop All</button>
+                        </div>
+                    </div>
+
+                    <!-- Sounds Grid -->
+                    <div class="sounds-grid" id="soundsGrid">
+                        <!-- Sound cards will be rendered by JS -->
+                    </div>
+
+                    <!-- Sound Presets -->
+                    <div class="sounds-presets">
+                        <h4>Quick Presets</h4>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" onclick="window.applyPreset('nature')">🌲 Nature</button>
+                            <button class="preset-btn" onclick="window.applyPreset('ocean')">🌊 Ocean</button>
+                            <button class="preset-btn" onclick="window.applyPreset('cozy')">🔥 Cozy</button>
+                            <button class="preset-btn" onclick="window.applyPreset('focus')">🎯 Focus</button>
+                            <button class="preset-btn" onclick="window.applyPreset('sleep')">😴 Sleep</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ SETTINGS APP ============ -->
+            <section class="app-section" id="app-settings">
+                <div class="settings-container">
+                    <div class="settings-header">
+                        <h2 class="app-title">Settings ⚙️</h2>
+                    </div>
+
+                    <!-- Theme Settings -->
+                    <div class="settings-section">
+                        <h3>🎨 Theme</h3>
+                        <div class="dark-mode-toggle">
+                            <label>Dark Mode</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="themes-section">
+                            <h4>Choose Theme</h4>
+                            <div id="themeSelector">
+                                <!-- Themes will be rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keyboard Shortcuts -->
+                    <div class="settings-section">
+                        <h3>⌨️ Keyboard Shortcuts</h3>
+                        <p class="settings-description">Use keyboard shortcuts for quick navigation and actions.</p>
+                        <button class="settings-btn" onclick="showShortcutsModal()">View All Shortcuts</button>
+                    </div>
+
+                    <!-- Data Management -->
+                    <div class="settings-section">
+                        <h3>💾 Data Management</h3>
+                        <div class="settings-actions">
+                            <button class="settings-btn" onclick="exportAllData()">📥 Export All Data</button>
+                            <button class="settings-btn danger" onclick="confirmClearAllData()">🗑️ Clear All
+                                Data</button>
+                        </div>
+                    </div>
+
+                    <!-- About -->
+                    <div class="settings-section">
+                        <h3>ℹ️ About</h3>
+                        <p class="settings-description">
+                            <strong>Productivity Hub</strong> - Your all-in-one productivity toolkit.<br>
+                            Version 2.0 • Made with ❤️
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Keyboard Shortcuts Help Button -->
+        <button class="shortcuts-help-btn" onclick="showShortcutsModal()" title="Keyboard Shortcuts (?)">⌨️</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- Fabric.js for Canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="themes.js"></script>
     <script src="main.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="pomodoro.js"></script>
+    <script src="tasks.js"></script>
+    <script src="canvas.js"></script>
+    <script src="habits.js"></script>
+    <script src="analytics.js"></script>
+    <script src="notes.js"></script>
+    <script src="sounds.js"></script>
+    <script src="shortcuts.js"></script>
 </body>
 
 </html>

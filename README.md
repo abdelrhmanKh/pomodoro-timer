@@ -1,272 +1,208 @@
-# Pomodoro Timer 🍅
+# Productivity Hub 🚀
 
-A feature-rich Pomodoro timer web application built with vanilla JavaScript, HTML5, and CSS3. Track your work sessions by activity type, set custom time intervals, and maintain productivity with focused work intervals and structured breaks.
+A comprehensive productivity suite featuring a Pomodoro timer, task management, habit tracking, notes, analytics, and more. Built with vanilla JavaScript, HTML5, CSS3, and Firebase for cloud synchronization.
 
-## Features
+## 🌟 Features Overview
 
-### ⏱️ Core Timer Functionality
+### ⏱️ Pomodoro Timer
 
-- **Work/Break Cycles**: Alternate between focused work sessions and rest periods
-- **Multiple Presets**: Choose from preset combinations:
-  - 25 minutes work / 5 minutes break (Classic)
-  - 50 minutes work / 10 minutes break (Extended)
-  - 75 minutes work / 15 minutes break (Marathon)
-  - Custom time configuration with pencil icon editor
-- **Start/Pause/Reset Controls**: Full control over your timer
-- **Responsive Timer Display**: Large, easy-to-read time display with mode indicator
+- **Work/Break Cycles**: Automatic switching between focused work and rest periods
+- **Multiple Presets**: 25/5, 50/10, 75/15, or custom durations
+- **Activity Tracking**: Track time across 6 categories (Work, Study, Exercise, Reading, Coding, Other)
+- **Daily Statistics**: Sessions completed, current streak, daily goal progress
+- **Background Timer**: Continues running even when tab is inactive (Web Worker powered)
+- **Sound Notifications**: Distinct audio alerts for work/break transitions
+- **Browser Notifications**: Desktop notifications when sessions complete
 
-### 📊 Activity Tracking & Statistics
+### ✅ Task Management
 
-- **Activity Type Selection**: Choose from 6 activity categories:
-  - Work
-  - Study
-  - Exercise
-  - Reading
-  - Coding
-  - Other
-- **Per-Activity Statistics**: Track cycles and total work time for each activity type
-- **Summary Panel**: View your progress in real-time (top-left of screen)
-  - Cycles breakdown by activity
-  - Total work time per activity (breaks excluded)
-- **Smart Time Accounting**: Only counts sessions ≥ 5 minutes to avoid inflating stats
+- **Kanban Board**: Organize tasks in To Do, Doing, and Done columns
+- **Drag & Drop**: Intuitive task organization
+- **Tags & Colors**: Custom tags with color coding
+- **Due Dates & Deadlines**: Set dates and times for tasks
+- **Media Attachments**: Add images and files to tasks
+- **Recurring Tasks**: Daily, weekly, or custom recurrence patterns
+- **Custom Trackers**: Create trackers for any tag to monitor task completion
+- **Priority Levels**: High, medium, low priority indicators
 
-### 🔊 Notifications
+### 🎯 Habit Tracking
 
-- **Distinct Sound Alerts**:
-  - Ring tone (1200Hz) when work session ends
-  - Double beep (800Hz) when break ends
-- **Visual & Audio Feedback**: Know exactly when to switch modes
+- **Daily Habits**: Create and track daily habits
+- **Completion History**: Visual calendar showing habit streaks
+- **Multiple Habits**: Track unlimited habits simultaneously
+- **Streak Tracking**: Monitor consecutive completion days
 
-### 💾 Data Persistence
+### 📝 Notes & Journal
 
-- **Local Storage**: All data stored locally in your browser
-- **Session Persistence**: Timer continues running even when you navigate away
-- **Automatic Saving**: Progress saved every 10 seconds and on page visibility changes
-- **Session Restoration**: Automatically restores active timer with accurate elapsed time calculation
+- **Quick Notes**: Capture thoughts and ideas instantly
+- **Daily Journal**: Reflect on your day with journal entries
+- **Rich Text**: Format your notes as needed
+- **Search**: Find notes quickly
 
-### 🎓 User Onboarding
+### 📊 Analytics Dashboard
 
-- **Interactive Introduction**: 8-step guided tutorial for first-time users
-  1. Welcome to Pomodoro Timer
-  2. Track Your Progress (summary panel explanation)
-  3. Choose Your Activity (activity selector)
-  4. Pick Your Time (presets and custom options)
-  5. Start Your Session (start button)
-  6. Useful Tools (help and clear data buttons)
-  7. Pro Tips (5-minute threshold, background timer)
-  8. You're Ready (final encouragement)
-- **Reintroduce Button**: View the tutorial anytime by clicking the "?" button
-- **Skip Option**: Skip introduction to start immediately
+- **Focus Time Trends**: Visualize work patterns (week/month/year views)
+- **Activity Breakdown**: See time distribution across activities
+- **Productivity Score**: Combined metric based on focus, tasks, and habits
+- **Task Completion Stats**: Track task completion rates
+- **Habit Completion Rate**: Monitor habit adherence
+- **Export Data**: Download your data as JSON
 
-### 🛠️ Additional Features
+### 🎨 Customization
 
-- **Custom Time Configuration Modal**: Set your own work/break intervals
-- **Clear Data Function**: Reset all statistics with confirmation modal
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
-- **Dark Theme**: Eye-friendly dark interface with red and green accents
-- **Smooth Animations**: Polished UI transitions and visual feedback
+- **Theme Support**: Light and dark modes
+- **Custom Tag Colors**: Personalize tag appearances
+- **Keyboard Shortcuts**: Quick actions for power users
+- **Sound Settings**: Customize notification sounds
 
-## How to Use
+### ☁️ Cloud Sync (Firebase)
 
-### Getting Started
+- **User Authentication**: Sign up/login with email or Google
+- **Real-time Sync**: Data synchronized across devices
+- **Offline Support**: Works offline with local storage fallback
+- **Secure**: Firebase security rules protect your data
 
-1. Open `index.html` in your web browser
-2. On first visit, you'll see an interactive introduction (8 steps)
-3. Skip the introduction or follow it to learn all features
+## 🚀 Getting Started
 
-### Basic Usage
+### Live Demo
 
-1. **Select Activity Type**: Choose what you're working on from the dropdown
-2. **Pick Time Preset**: Select your preferred work/break duration
-   - Use the pencil icon (✏️) to customize time intervals
-3. **Start Timer**: Click the "Start" button to begin
-4. **Work During Session**: Focus on your task for the set duration
-5. **Break Time**: Timer automatically switches to break mode with a notification
-6. **Review Progress**: Check your statistics in the summary panel (top-left)
+Visit: [Your deployed URL]
 
-### Custom Time Configuration
+### Local Development
 
-- Click the pencil icon (✏️) next to "Custom" button
-- Enter desired work and break durations in minutes
-- Save your custom preset
-- Your custom times are remembered for future sessions
+1. **Clone the repository**
 
-### Managing Data
+   ```bash
+   git clone https://github.com/abdelrhmanKh/pomodoro-timer.git
+   cd pomodoro-timer
+   ```
 
-- **View Statistics**: Check the summary panel showing cycles and work time per activity
-- **Clear All Data**: Click the trash icon (🗑️) in the top-right corner
-  - Confirm deletion when prompted
-  - This will reset all statistics and activity tracking
-- **Replay Introduction**: Click the "?" button to see the tutorial again
+2. **Open in browser**
 
-## Technical Details
+   - Simply open `index.html` in your browser, or
+   - Use VS Code Live Server extension for development
+
+3. **Firebase Setup** (Optional - for cloud sync)
+   - Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
+   - Enable Authentication (Email/Password and Google)
+   - Enable Firestore Database
+   - Update `firebase-config.js` with your credentials
+
+## 📁 Project Structure
+
+```
+pomodoro-timer/
+├── index.html          # Main app page
+├── login.html          # Authentication page
+├── main.js             # Core app logic & navigation
+├── pomodoro.js         # Timer functionality
+├── tasks.js            # Task management
+├── habits.js           # Habit tracking
+├── notes.js            # Notes & journal
+├── analytics.js        # Statistics & charts
+├── dashboard.js        # Dashboard widgets
+├── auth.js             # Authentication
+├── firebase-config.js  # Firebase configuration
+├── timer-worker.js     # Web Worker for background timer
+├── sw.js               # Service Worker for offline support
+├── *.css               # Stylesheets for each module
+├── assets/             # Images and static files
+├── firebase.json       # Firebase hosting config
+├── firestore.rules     # Firestore security rules
+└── README.md           # This file
+```
+
+## 🔧 Technical Details
 
 ### Technologies Used
 
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3
-- **Storage**: Browser localStorage API
-- **Audio**: Web Audio API for custom notification sounds
-- **Styling**: CSS3 Flexbox, Grid, Gradients, Glassmorphism effects
-- **No Dependencies**: Pure vanilla implementation, no frameworks or libraries required
+- **Backend**: Firebase (Authentication, Firestore)
+- **Storage**: localStorage (offline) + Firestore (cloud sync)
+- **Audio**: Web Audio API
+- **Background Processing**: Web Workers
+- **Offline Support**: Service Workers
 
-### File Structure
+### Key Features Implementation
 
+**Reliable Background Timer**
+
+- Web Worker ensures timer accuracy even when tab is inactive
+- Timestamp-based calculation handles browser throttling
+- Automatic session restoration on page reload
+
+**Data Synchronization**
+
+- Real-time listeners for instant updates
+- Debounced writes to reduce Firebase calls
+- Conflict resolution favoring valid data over NaN values
+- Offline-first with automatic sync when online
+
+**Responsive Design**
+
+- Mobile-first approach
+- Adaptive layouts for all screen sizes
+- Touch-friendly controls
+
+## 📱 Browser Compatibility
+
+| Browser         | Support         |
+| --------------- | --------------- |
+| Chrome/Edge     | ✅ Full Support |
+| Firefox         | ✅ Full Support |
+| Safari          | ✅ Full Support |
+| Mobile Browsers | ✅ Responsive   |
+
+**Requirements**: JavaScript enabled, localStorage support
+
+## 🔒 Privacy & Security
+
+- **Local-first**: Works completely offline
+- **No tracking**: No analytics or third-party scripts
+- **Secure sync**: Firebase security rules protect user data
+- **Your data**: Export anytime, delete anytime
+
+## 🎯 Usage Tips
+
+1. **Pomodoro Technique**: Work in focused 25-minute intervals with 5-minute breaks
+2. **Track Activities**: Use activity types to understand where your time goes
+3. **Set Daily Goals**: Configure a realistic daily focus time goal
+4. **Use Tags**: Organize tasks with colored tags for quick identification
+5. **Build Habits**: Start small and build consistency with habit tracking
+6. **Review Analytics**: Check weekly trends to optimize your productivity
+
+## 🛠️ Development
+
+### Firebase Deployment
+
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Deploy to hosting
+firebase deploy --only hosting
 ```
-pomodoro-timer/
-├── assets/images       #Images that appear in the inrtoduction window
-├── index.html          # Page structure and modals
-├── main.css            # Complete styling and responsive design
-├── main.js             # Application logic and state management
-└── README.md          # This file
+
+### Local Testing with Firebase
+
+```bash
+# Start Firebase emulators
+firebase emulators:start
 ```
 
-### How It Works
-
-**Timer System**
-
-- Main timer runs on a 1-second interval using `setInterval()`
-- Timestamps used for background timing accuracy
-- Elapsed time calculated as: `currentTime - sessionStartTime`
-
-**Storage Architecture**
-
-- **pomodoroData**: Main statistics object containing per-activity data
-- **pomodoroSession**: Active timer state with remaining time and timestamps
-- **pomodoroFirstTime**: Boolean flag for first-time user detection
-
-**Activity Statistics**
-
-```javascript
-{
-  work: { cycles: 5, totalWorkTime: 125 },
-  study: { cycles: 3, totalWorkTime: 75 },
-  exercise: { cycles: 1, totalWorkTime: 25 },
-  // ... other activities
-}
-```
-
-**Key Functions**
-
-- `tick()`: Main timer callback, runs every second
-- `saveToStorage()` / `loadFromStorage()`: Persistence layer
-- `saveTimerSession()` / `restoreTimerSession()`: Background timer support
-- `playWorkEndSound()` / `playBreakEndSound()`: Audio notifications
-- `updateIntroStep()`: Tutorial navigation
-
-## Data Persistence Details
-
-### Automatic Saving
-
-- Every 10 seconds during active timer
-- On page visibility changes (tab switch, minimize)
-- On activity type change
-- On preset selection
-
-### Background Timer
-
-- Timer continues running when you navigate away
-- Closing the tab and reopening restores your session
-- Elapsed time calculated from system clock, not just saved remaining time
-- Accurate to the second even after browser/device restarts
-
-### Time Accounting
-
-- Only counts work sessions ≥ 5 minutes
-- Prevents inflating statistics from brief interruptions
-- Rest/break time is not counted toward work time totals
-- Automatic on session reset
-
-## Browser Compatibility
-
-- **Chrome/Edge**: Full support (recommended)
-- **Firefox**: Full support
-- **Safari**: Full support
-- **Mobile Browsers**: Fully responsive and functional
-- **Requirements**: JavaScript enabled, localStorage support
-
-## Activity Types
-
-The timer supports tracking six different activity types:
-
-| Activity     | Use Case                                      |
-| ------------ | --------------------------------------------- |
-| **Work**     | Professional tasks, office work               |
-| **Study**    | Academic learning, courses, reading materials |
-| **Exercise** | Fitness, workouts, physical activities        |
-| **Reading**  | Books, articles, documentation                |
-| **Coding**   | Programming, development, debugging           |
-| **Other**    | Miscellaneous tasks                           |
-
-Each activity tracks:
-
-- Number of completed cycles
-- Total work time (excluding breaks)
-
-## Tips for Maximum Productivity
-
-1. **Stick to the Technique**: Follow the Pomodoro principle strictly
-2. **Minimize Distractions**: Silence notifications during work sessions
-3. **Track Patterns**: Monitor which activities take the longest
-4. **Vary Durations**: Experiment with 25/5, 50/10, and 75/15 presets
-5. **Use Activity Categories**: Helps you understand where your time goes
-6. **Take Real Breaks**: Don't skip break time—it's essential for focus
-7. **Daily Reset**: Clear data weekly to start fresh and track weekly progress
-
-## Known Limitations
-
-- Storage limited to browser's localStorage (typically 5-10MB)
-- Data is device/browser specific—not synchronized across devices
-- Clearing browser data will erase all statistics
-- Background timer accuracy depends on system clock
-
-## Future Enhancement Ideas
-
-- Export statistics to CSV/PDF
-- Cloud synchronization across devices
-- Weekly/monthly reports and charts
-- Recurring tasks and templates
-- Desktop notifications (Notification API)
-- Keyboard shortcuts for controls
-- Multiple timer sessions simultaneously
-- Customizable notification sounds
-
-## Privacy & Data
-
-- **No Server Required**: Everything runs locally in your browser
-- **No Data Collection**: No data is sent to external servers
-- **No Tracking**: No analytics or tracking scripts
-- **Your Data**: Completely under your control in localStorage
-
-## Getting Started Locally
-
-### Method 1: Direct Open
-
-1. Download all files
-2. Open `index.html` in your browser
-3. Start using immediately—no installation needed
-
-### Method 2: Local Server (Recommended)
-
-1. Use VS Code Live Server extension
-
-### Method 3: Deployment
-
-- Upload files to any web hosting service
-- GitHub Pages (free)
-- Netlify
-- Vercel
-- Any static file hosting
-
-## License
+## 📄 License
 
 Free to use, modify, and distribute. No restrictions.
 
-## Author
+## 👤 Author
 
-Created as a productivity tool for the Pomodoro Technique enthusiasts.
+Created by [abdelrhmanKh](https://github.com/abdelrhmanKh)
 
 ---
 
-**Ready to boost your productivity? Start using Pomodoro Timer today!** 🚀
+**Ready to boost your productivity? Start using Productivity Hub today!** 🚀
 
-For questions or suggestions, feel free to reach out or create an issue on GitHub.
+For questions or suggestions, feel free to create an issue on GitHub.
