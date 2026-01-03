@@ -3,7 +3,7 @@
 // Get these from: https://console.firebase.google.com > Project Settings > Your apps > Web app
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAIBoDp4GadKl73-Z6cEecmiuBEMGqH7Sk",
+
     authDomain: "my-productive-hub-project.firebaseapp.com",
     projectId: "my-productive-hub-project",
     storageBucket: "my-productive-hub-project.firebasestorage.app",
